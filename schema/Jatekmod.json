@@ -1,0 +1,30 @@
+db.createCollection("jatekmod", {
+    "validator": {
+       "$jsonSchema": {
+      "bsonType": "object",
+      "required": [ "nev","schema_version","engedelyezetthosok"],
+      "properties": {
+         "nev": {
+            "bsonType": "string"
+         },
+          "schema_version": {
+                "bsonType": "int"
+         },
+         "engedelyezetthosok": {
+                   "bsonType": "array",
+                   "minItems": 0,
+                   "uniqueItems": true,
+                 "items": {
+                   "bsonType": ["object"],
+                   "required": [ "nev"],
+                   "properties": {
+                       "nev": {
+                              "bsonType": "string"
+                     },
+                   }
+                }
+             }
+      }
+     }
+   } 
+ })

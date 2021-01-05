@@ -1,0 +1,68 @@
+db.createCollection("Hos",
+{
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+                "nev",
+                "schema_version",
+                "leiras",
+                "ar",
+                "kinezetek",
+                "meccsekSzam"
+            ],
+            "properties": {
+                "nev": {
+                    "bsonType": "string"
+                },
+                "schema_version": {
+                    "bsonType": "int"
+                },
+                "leiras": {
+                    "bsonType": "string"
+                },
+                "ar": {
+                    "bsonType": "int",
+                    "minimum": 450,
+                    "maximum": 6300
+                },
+                "meccsekSzam": {
+                    "bsonType": "int"
+                },
+                "kinezetek": {
+                    "bsonType": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "bsonType": [
+                            "object"
+                        ],
+                        "required": [
+                            "nev",
+                            "kepfile",
+                            "elerheto",
+                            "ar"
+                        ],
+                        "properties": {
+                            "nev": {
+                                "bsonType": "string"
+                            },
+                            "kepfile": {
+                                "bsonType": "string"
+                            },
+                            "elerheto": {
+                                "bsonType": "bool"
+                            },
+                            "ar": {
+                                "bsonType": "int",
+                                "minimum": 250,
+                                "maximum": 5000
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
+ 

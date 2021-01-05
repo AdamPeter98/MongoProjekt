@@ -1,0 +1,54 @@
+
+db.createCollection("Kiralysag",
+{
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+                "nev",
+                "schema_version",
+                "leiras",
+                "kiraly_neve",
+                "terulet",
+                "it_jart_hosok"
+            ],
+            "properties": {
+                "nev": {
+                    "bsonType": "string",
+                },
+                "schema_version": {
+                    "bsonType": "int"
+                },
+                "leiras": {
+                    "bsonType": "string",
+                },
+                "kiraly_neve": {
+                    "bsonType": "string"
+                },
+                "terulet": {
+                    "bsonType": "int",
+                    "maximum": 10000
+                },
+                "it_jart_hosok": {
+                    "bsonType": "array",
+                    "minItems": 0,
+                    "uniqueItems": true,
+                    "items": {
+                        "bsonType": [
+                            "object"
+                        ],
+                        "required": [
+                            "nev"
+                        ],
+                        "properties": {
+                            "nev": {
+                                "bsonType": "string"
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
+ 

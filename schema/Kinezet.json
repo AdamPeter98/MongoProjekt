@@ -1,0 +1,27 @@
+db.createCollection("Kinezet", {
+    "validator": {
+       "$jsonSchema": {
+      "bsonType": "object",
+      "required": [ "nev","schema_version","kepfile","elerheto","ar"],
+      "properties": {
+         "nev": {
+            "bsonType": "string"
+         },
+         "schema_version": {
+                "bsonType": "int"
+         },
+         "kepfile": {
+            "bsonType": "string"
+         },
+         "elerheto": {
+            "bsonType": "bool"
+         },
+         "ar":{
+            "bsonType": "int",
+            "minimum": 250,
+            "maximum": 5000
+         }
+      }
+     }
+   } 
+ })

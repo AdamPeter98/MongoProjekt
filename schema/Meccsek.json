@@ -1,0 +1,85 @@
+db.createCollection("meccsek",
+{
+    "validator": {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": [
+                "datum",
+                "schema_version",
+                "idotartam",
+                "jatekosok",
+                "nyertes"
+            ],
+            "properties": {
+                "datum": {
+                    "bsonType": "date",
+                },
+                "schema_version": {
+                    "bsonType": "int"
+                },
+                "idotartam": {
+                    "bsonType": "int",
+                    "maximum": 10000,
+                    "description": "masodpercben az ido"
+                },
+                "jatekosok": {
+                    "bsonType": "array",
+                    "minItems": 10,
+                    "uniqueItems": true,
+                    "items": {
+                        "bsonType": [
+                            "object"
+                        ],
+                        "required": [
+                            "nev",
+                            "kepfile",
+                            "csapat",
+                            "hos"
+                        ],
+                        "properties": {
+                            "nev": {
+                                "bsonType": "string",
+                            },
+                            "kepfile": {
+                                "bsonType": "string"
+                            },
+                            "hos": {
+                                "bsonType": "object",
+                                "required": [
+                                    "nev",
+                                    "kinezet"
+                                ],
+                                "properties": {
+                                    "nev": {
+                                        "bsonType": "string",
+                                    },
+                                    "kinezet": {
+                                        "bsonType": "object",
+                                        "required": [
+                                            "nev",
+                                            "kepfile"
+                                        ],
+                                        "properties": {
+                                            "nev": {
+                                                "bsonType": "string"
+                                            },
+                                            "kepfile": {
+                                                "bsonType": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "csapat": {
+                                "enum": [
+                                    "piros",
+                                    "kek"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+})

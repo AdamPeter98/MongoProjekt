@@ -1,0 +1,44 @@
+db.createCollection("Item", {
+    "validator": {
+       "$jsonSchema": {
+      "bsonType": "object",
+      "required": ["nev","ar","schema_version","kepfile","elerheto","tulajdonsagok"],
+      "properties": {
+         "nev": {
+            "bsonType": "string"
+         },
+         "schema_version": {
+                "bsonType": "int"
+         },
+         "kepfile": {
+            "bsonType": "string"
+         },
+         "elerheto": {
+            "bsonType": "bool"
+         },
+         "ar":{
+            "bsonType": "int",
+            "minimum": 0,
+            "maximum": 4000
+         },
+         "tulajdonsagok":{
+             "bsonType": ["array"],
+             "minItems": 1, 
+             "uniqueItems": true,
+             "items": {
+                 "bsonType": ["object"],
+                 "required": ["k","v"],
+                 "properties": {
+                    "k": {
+                     "bsonType": "string"
+                    },
+                    "v": {
+                     "bsonType": "int"
+                    },
+                 }
+             }
+         }
+      }
+     }
+   } 
+ })
