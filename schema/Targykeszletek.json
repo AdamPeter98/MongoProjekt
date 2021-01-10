@@ -1,30 +1,67 @@
-db.createCollection("Targykeszletek", {
-    "validator": {
-       "$jsonSchema": {
-      "bsonType": "object",
-      "required": ["schema_version","hos","items"],
-      "properties": {
-         "hos": {
-                 "bsonType": ["object"],
-                 "required": [ "nev"],
-                 "properties": {
-                         "nev": {
-                                 "bsonType": "string"
-                         },
-                 }
-         },
-         "schema_version": {
-                "bsonType": "int"
-         },
-         "items":{
-             "bsonType": ["array"],
-             "minItems": 6, 
-             "uniqueItems": true,
-             "items": {
-                 "bsonType": ["objectId"]
-             }
-         }
-      }
-     }
-   } 
- })
+db.createCollection("Targykeszletek",
+{
+        "validator": {
+                "$jsonSchema": {
+                        "bsonType": "object",
+                        "required": [
+                                "schema_version",
+                                "hos",
+                                "itemek"
+                        ],
+                        "properties": {
+                                "hos": {
+                                        "bsonType": [
+                                                "object"
+                                        ],
+                                        "required": [
+                                                "nev"
+                                        ],
+                                        "properties": {
+                                                "nev": {
+                                                        "bsonType": "string"
+                                                },
+                                        }
+                                },
+                                "schema_version": {
+                                        "bsonType": "int"
+                                },
+                                "itemek": {
+                                        "bsonType": "array",
+                                        "minItems": 6,
+                                        "uniqueItems": true,
+                                        "items": {
+                                                "bsonType":"object",
+                                                "required": ["itemId"],
+                                                "properties":{
+                                                        "itemId":{
+                                                            "bsonType": "objectId"    
+                                                        }
+                                                }
+                                                
+                                        }
+                                }
+                        }
+                }
+        }
+})
+
+"nev": {
+        "$oid": "12312323443434fdfdfdfdfd"
+    }
+
+ db.createCollection("Targykeszletek",
+{
+        "validator": {
+                "$jsonSchema": {
+                        "bsonType": "object",
+                        "required": ["nev"],
+                        "properties":{
+                                "nev":{
+                                        "bsonType":"objectId"
+                                }
+                        }
+
+                }
+        }
+        
+})

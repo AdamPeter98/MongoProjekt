@@ -23,8 +23,7 @@ db.createCollection("Hos",
                 },
                 "ar": {
                     "bsonType": "int",
-                    "minimum": 450,
-                    "maximum": 6300
+                   
                 },
                 "meccsekSzam": {
                     "bsonType": "int"
@@ -32,7 +31,6 @@ db.createCollection("Hos",
                 "kinezetek": {
                     "bsonType": "array",
                     "minItems": 1,
-                    "uniqueItems": true,
                     "items": {
                         "bsonType": [
                             "object"
@@ -40,7 +38,6 @@ db.createCollection("Hos",
                         "required": [
                             "nev",
                             "kepfile",
-                            "elerheto",
                             "ar"
                         ],
                         "properties": {
@@ -50,13 +47,9 @@ db.createCollection("Hos",
                             "kepfile": {
                                 "bsonType": "string"
                             },
-                            "elerheto": {
-                                "bsonType": "bool"
-                            },
                             "ar": {
-                                "bsonType": "int",
-                                "minimum": 250,
-                                "maximum": 5000
+                                "bsonType": "int"
+                                
                             }
                         }
                     }
@@ -66,3 +59,29 @@ db.createCollection("Hos",
     }
 })
  
+db.createCollection("Hos", {
+    "validator": {
+       "$jsonSchema": {
+          "bsonType": "object",
+          "required": ["nev","schema_version","leiras","ar","meccsekSzam"],
+          "properties": {
+             "schema_version": {
+                "bsonType": "int"
+             },
+            "nev": {
+                "bsonType": "string",
+             },
+             "leiras": {
+                      "bsonType": "string"
+             },
+             "ar": {
+                "bsonType": "int"
+             },
+             "meccsekSzama": {
+                "bsonType": "int"
+             },
+    
+          }
+       }
+    }
+ })
