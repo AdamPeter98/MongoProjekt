@@ -1,0 +1,164 @@
+/** item -> targykeszlet**/
+
+db.Item.aggregate([
+    {
+        $lookup: {
+            from: "Item",
+            localField: "itemId",
+            foreignField: "_id",
+            as: "itemDetail"
+        }
+    }
+])
+/*hos -. tarkeszlet look up modositani kell egy hos nevet hogy ugyan az legyen mint ami a targykeszletben van*/
+//Hosok meccsek szama szerinte csokkeno sorrendben 
+
+db.Hos.aggregate(
+    [
+    {$project: {nev: 1,_id: 0,meccsekSzam: 1
+        }
+    },
+    {$sort: {meccsekSzam: -1
+        }
+    }
+]
+)
+
+// Az a hos amelyik 54905 es 5wwwjkakzr a neve
+
+db.Hos.aggregate(
+    [
+    {$match: {
+                nev: "5wwwjkakzr",
+                ar: 5695
+        }
+    },
+    {$project: {
+            _id: 0,
+            nev: 1,
+            leiras: 1,
+            ar: 1,
+            schema_version: 1,
+            meccsekSzama: 1,
+            kinezetek: 1
+        }
+    }
+]
+)
+
+//ryqlax2e3d nevu hos hany itemet hasznal
+
+db.Targykeszletek.aggregate(
+    [
+    {$match: {
+            hos: {
+                nev: "ryqlax2e3d"
+            }
+        }
+    },
+    {
+        $project: {
+            _id: 0,
+            hos: {
+                nev: 1
+            },
+            itemekSzama: {$cond: {if: {$isArray: "$itemek"
+                    }, then: {$size: "$itemek"
+                    }, else: "NA"
+                }
+            },
+        }
+    }
+]
+)
+
+//azok az itemek amelyek tobb mint 800 kitartast (pontot) adnak
+
+db.Item.aggregate(
+    [
+    {
+        $project: {
+            _id: 0,
+            nev: 1,
+            tulajdonsagok: 1
+        }
+    },
+    {
+        $unwind: "$tulajdonsagok"
+    },
+    {
+        $replaceRoot: {newRoot: "$tulajdonsagok"
+        }
+    },
+    {
+        $match: {
+            k: "kitartas",
+            v: {$gt: 800
+            }
+        }
+    }
+]
+)
+
+//73sdf23dg hosnek mennyibe kerulnek az itemei
+db.Targykeszletek.aggregate(
+    [
+    {
+            $match: {
+                hos: {
+                    nev: "ev40b4ks7h"
+            }
+        }
+    },
+    {
+            $unwind: "$itemek"
+    },
+    {
+            $replaceRoot: {newRoot: "$itemek"
+        }
+    },
+    {
+            $lookup: {
+                from: "Item",
+                localField: "itemId",
+                foreignField: "_id",
+                as: "itemDetail"
+        }
+    },
+    {
+            $project: {
+               itemDetail: {
+                   ar: 1
+            }
+        }
+    },
+]
+)
+
+//73sdf23dg hosnek mennyibe kerulnek az itemeiosszesen elmentve egy kulon fieldbe
+db.Targykeszletek.aggregate(
+    [
+    {
+            $match: {
+                hos: {
+                    nev: "ev40b4ks7h"
+            }
+        }
+    },
+    {
+        $lookup: {
+            from: "Item",
+            localField: "itemek.itemId",
+            foreignField: "_id",
+            as: "itemDetail"
+        }
+    },
+    {
+        $addFields:{
+            totalItmePrice:{
+                $sum:"$itemDetail.ar"
+            }
+        }
+    }
+]
+)

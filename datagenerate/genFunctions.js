@@ -30,6 +30,16 @@ var getRandomNameItemId = function () {
     return db.Item.findOne({ ar: { $eq: getRandomArbitrary(0, 4000) } }, { "_id": 1 })._id.toString()
 }
 
+/*
+Attributum minta  - Item
+Adatismetles - Hos.nev->Kiralysag.ottJartHos Jatekos.kedvenchos->Hos
+Extended reference - jatekmodban a hos neve
+Computed - Hos -> meccsek szama
+Séma verzió - minden
+
+Hivatkozas targykeszletben hos objectid
+*/
+
 //splesartok
 for (var i = 1; i <= 1000000; i++) {
     db.Splesartok.insert(
@@ -222,9 +232,11 @@ for (var i = 1; i <= 1000000; i++) {
 }
 
 //Targyeszlet
+var insertTargy = function() {
+    
 
-for (var i = 1; i <= 3; i++) {
-
+for (var i = 1; i <= 100000; i++) {
+    try{
     db.Targykeszletek.insert(
 
         {
@@ -263,7 +275,13 @@ for (var i = 1; i <= 3; i++) {
 
 
     );
+    }catch(err){
+        insertTargy()
+    }
 }
+
+}
+
 
 for(var i = 1; i <=100000; i++){
     db.jatekmod.insert(

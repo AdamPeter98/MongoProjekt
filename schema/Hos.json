@@ -59,29 +59,3 @@ db.createCollection("Hos",
     }
 })
  
-db.createCollection("Hos", {
-    "validator": {
-       "$jsonSchema": {
-          "bsonType": "object",
-          "required": ["nev","schema_version","leiras","ar","meccsekSzam"],
-          "properties": {
-             "schema_version": {
-                "bsonType": "int"
-             },
-            "nev": {
-                "bsonType": "string",
-             },
-             "leiras": {
-                      "bsonType": "string"
-             },
-             "ar": {
-                "bsonType": "int"
-             },
-             "meccsekSzama": {
-                "bsonType": "int"
-             },
-    
-          }
-       }
-    }
- })
