@@ -30,6 +30,53 @@ var getRandomNameItemId = function () {
     return db.Item.findOne({ ar: { $eq: getRandomArbitrary(0, 4000) } }, { "_id": 1 })._id.toString()
 }
 
+var getRandomNameItemId = function () {
+    return db.Item.findOne({ ar: { $eq: getRandomArbitrary(0, 4000) } }, { "_id": 1 })._id.toString()
+}
+var getRandomNameJatekomd = function () {
+    return db.Hos.findOne({ schema_version: { $eq: 1 } }).nev
+}
+for (var i = 1; i <= 34230; i++) {
+    db.Hos.deleteOne({ nev: getRandomNameJatekomd() })
+}
+
+var getRandomHosName = function () {
+    return db.Hos.findOne({ ar: { $eq: getRandomArbitrary(450, 6300) } }, { "nev": 1 }).nev.toString()
+}
+
+var getItems = function () {
+    return db.Item.aggregate([
+        {
+           $match: {
+               ar: {$gt: 3800 }
+                   },
+       },{
+           $sort:{
+               ar:-1
+           }
+       }
+           ])
+       
+}
+
+var itemPerformance = function () {
+    var sDate = Date();
+   var res = db.Item.aggregate([
+        {
+           $match: {
+               ar: {$gt: 3700 }
+                   },
+       },{
+           $sort:{
+               ar:-1
+           }
+       }
+           ])
+    var fDate = Date(); 
+
+    return res+sDate+" "+fDate
+}
+
 /*
 Attributum minta  - Item
 Adatismetles - Hos.nev->Kiralysag.ottJartHos Jatekos.kedvenchos->Hos
@@ -41,7 +88,7 @@ Hivatkozas targykeszletben hos objectid
 */
 
 //splesartok
-for (var i = 1; i <= 1000000; i++) {
+for (var i = 1; i <= 1000; i++) {
     db.Splesartok.insert(
         {
             "nev": randomName(),
@@ -49,16 +96,16 @@ for (var i = 1; i <= 1000000; i++) {
             "kepfile": randomKep(),
             "it_jart_hosok": [
                 {
-                    "nev": randomName()
+                    "nev": getRandomHosName()
                 },
                 {
-                    "nev": randomName()
+                    "nev": getRandomHosName()
                 },
                 {
-                    "nev": randomName()
+                    "nev": getRandomHosName()
                 },
                 {
-                    "nev": randomName()
+                    "nev": getRandomHosName()
                 }
             ]
         }
@@ -232,112 +279,112 @@ for (var i = 1; i <= 1000000; i++) {
 }
 
 //Targyeszlet
-var insertTargy = function() {
-    
+var insertTargy = function () {
+
+
+    for (var i = 1; i <= 100000; i++) {
+        try {
+            db.Targykeszletek.insert(
+
+                {
+
+                    "schema_version": 1,
+                    "hos": {
+                        "nev": randomName()
+                    },
+                    "itemek": [
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        },
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        },
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        },
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        },
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        },
+                        {
+                            "itemId":
+                                ObjectId(getRandomNameItemId()),
+                        }
+                    ]
+                }
+
+
+            );
+        } catch (err) {
+            insertTargy()
+        }
+    }
+
+}
+
 
 for (var i = 1; i <= 100000; i++) {
-    try{
-    db.Targykeszletek.insert(
-
-        {
-
-            "schema_version": 1,
-            "hos": {
-                "nev": randomName()
-            },
-            "itemek": [
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                },
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                },
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                },
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                },
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                },
-                {
-                    "itemId":
-                        ObjectId(getRandomNameItemId()),
-                }
-            ]
-        }
-
-
-    );
-    }catch(err){
-        insertTargy()
-    }
-}
-
-}
-
-
-for(var i = 1; i <=100000; i++){
     db.jatekmod.insert(
         {
-            nev:randomName(),
-            schema_version:1,
-            engedelyezetthosok:[{
-                nev:randomName()
+            nev: randomName(),
+            schema_version: 1,
+            engedelyezetthosok: [{
+                nev: randomName()
             },
             {
-                nev:randomName()
+                nev: randomName()
             }]
         }
     );
 }
 
-for(var i = 1; i <=100000; i++){
+for (var i = 1; i <= 100000; i++) {
     db.jatekmod.insert(
         {
-            nev:randomName(),
-            schema_version:2,
-            engedelyezetthosok:[{
-                nev:randomName()
+            nev: randomName(),
+            schema_version: 2,
+            engedelyezetthosok: [{
+                nev: randomName()
             }],
-			mapkep:randomKep()
+            mapkep: randomKep()
         }
     );
 }
 
-for(var i = 1; i <=500000; i++){
+for (var i = 1; i <= 500000; i++) {
     db.jatekmod.insert(
         {
-            nev:randomName(),
-            schema_version:3,
-			engedelyezetthosok:[{
-                nev:randomName()
+            nev: randomName(),
+            schema_version: 3,
+            engedelyezetthosok: [{
+                nev: randomName()
             }],
-			szerezhetoxp:getRandomArbitrary(100,500)
+            szerezhetoxp: getRandomArbitrary(100, 500)
         }
     );
 }
 
-for(var i = 1; i <=300000; i++){
+for (var i = 1; i <= 300000; i++) {
     db.jatekmod.insert(
         {
-            nev:randomName(),
-            schema_version:4,
-			engedelyezetthosok:[{
-                nev:randomName()
+            nev: randomName(),
+            schema_version: 4,
+            engedelyezetthosok: [{
+                nev: randomName()
             }],
-			szerezhetoxp:getRandomArbitrary(100,500),
-			szerezhetojutalmak:[{
-                jutalom:randomName()
+            szerezhetoxp: getRandomArbitrary(100, 500),
+            szerezhetojutalmak: [{
+                jutalom: randomName()
             },
-			{
-                jutalom:randomName()
+            {
+                jutalom: randomName()
             }]
         }
     );

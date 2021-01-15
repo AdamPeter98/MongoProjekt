@@ -1,18 +1,46 @@
 /** item -> targykeszlet**/
 
-db.Item.aggregate([
+db.Targykeszletek.aggregate(
+    [
+    {
+            $match: {
+                hos: {
+                    nev: "ev40b4ks7h"
+            }
+        }
+    },
     {
         $lookup: {
             from: "Item",
-            localField: "itemId",
+            localField: "itemek.itemId",
             foreignField: "_id",
             as: "itemDetail"
         }
-    }
-])
-/*hos -. tarkeszlet look up modositani kell egy hos nevet hogy ugyan az legyen mint ami a targykeszletben van*/
-//Hosok meccsek szama szerinte csokkeno sorrendben 
+    },
+]) 
 
+
+db.Splesartok.aggregate(
+    [
+    {
+            $match: {
+                schema_version: 2
+        }
+    },
+    {
+        $lookup: {
+            from: "Hos",
+            localField: "hosok.nev",
+            foreignField: "nev",
+            as: "hosokDetail"
+        }
+    }
+]
+) 
+
+
+
+//lekerdezesek
 db.Hos.aggregate(
     [
     {$project: {nev: 1,_id: 0,meccsekSzam: 1
@@ -154,11 +182,39 @@ db.Targykeszletek.aggregate(
         }
     },
     {
-        $addFields:{
-            totalItmePrice:{
-                $sum:"$itemDetail.ar"
+        $addFields: {
+            totalItmePrice: {
+                $sum: "$itemDetail.ar"
             }
         }
     }
 ]
-)
+)  
+
+db.Item.find({
+    ar: {$gt: 3500
+    }
+}).sort({ar: 1
+}).explain("executionStats").executionStats.executionTimeMillis
+    
+//720 before index
+
+db.Item.createIndex({
+    "ar": 1
+})
+//220 after
+
+
+//m betuvel kezdodo item, a kep faljuk .png es 3 tulajdonsaga van
+
+db.Item.find({
+    nev: "nb2dhx0vhr",
+    kepfile:{$regex: /.png$/i},
+    tulajdonsagok:{$size:5}
+}).explain("executionStats").executionStats.executionTimeMillis
+
+//498
+db.Item.createIndex({
+    "nev": 1
+})
+//1
