@@ -1,4 +1,3 @@
-
 //A ev40b4ks7h hos itemeinek reszletes leirasa
 
 db.Targykeszletek.aggregate(
@@ -249,8 +248,6 @@ db.Item.createIndex({
     "ar": 1
 })
 //220 after
-
-
 //m betuvel kezdodo item, a kep faljuk .png es 3 tulajdonsaga van
 db.Item.find({
     nev: "nb2dhx0vhr",
@@ -264,5 +261,45 @@ db.Item.find({
 db.Item.createIndex({
     "nev": 1
 })
-//1
 
+
+//azok a hosok amelyeknek az ara > 2000 es 3 kinezete van es leirasa
+
+db.Hos.find({
+    ar: {
+        $gt: 2000
+    },
+    "$expr": {
+        "$gt": [
+            {
+                "$strLenCP": "$leiras"
+            },
+            7
+        ]
+    },
+    kinezetek: {
+        $size: 3
+    }
+}).sort({meccsekSzam: 1
+}).explain("executionStats").executionStats.executionTimeMillis
+//256
+
+db.Hos.createIndex({
+    "meccsekSzam": 1,
+    "ar": 1
+})
+//229
+
+
+//
+
+db.jatekmod.find({
+   
+   nev:"lmycz9o702"
+}).explain("executionStats").executionStats.executionTimeMillis
+//337
+
+db.jatekmod.createIndex({
+    "nev": 1
+})
+//1
