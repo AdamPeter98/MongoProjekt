@@ -1,4 +1,4 @@
-//A ev40b4ks7h hos itemeinek reszletes leirasa
+//1. A ev40b4ks7h hos itemeinek reszletes leirasa
 
 db.Targykeszletek.aggregate(
     [
@@ -19,7 +19,7 @@ db.Targykeszletek.aggregate(
     },
 ]) 
 
-// A 2-es schmea versionnal rendelkezo Splesartok hoseinek a reszletes leirasa
+//2. A 2-es schmea versionnal rendelkezo Splesartok hoseinek a reszletes leirasa
 db.Splesartok.aggregate(
     [
     {
@@ -38,7 +38,7 @@ db.Splesartok.aggregate(
 ]
 ) 
 
-//Azok a hosok akik tobb mint 200 meccsben resztvettek emeljuk meg az arukat 
+//3. Azok a hosok akik tobb mint 200 meccsben resztvettek emeljuk meg az arukat 
 db.Hos.aggregate([
     {
         $project: {
@@ -61,7 +61,7 @@ db.Hos.aggregate([
     }
 ])
 
-//lekerdezesek
+//4. lekerdezesek
 db.Hos.aggregate(
 [
     {
@@ -78,7 +78,7 @@ db.Hos.aggregate(
     }
 ])
 
-// Az a hos amelyik 54905 es 5wwwjkakzr a neve
+//5. Az a hos amelyik 54905 es 5wwwjkakzr a neve
 
 db.Hos.aggregate(
     [
@@ -100,7 +100,7 @@ db.Hos.aggregate(
 ]
 )
 
-//ryqlax2e3d nevu hos hany itemet hasznal
+//6. ryqlax2e3d nevu hos hany itemet hasznal
 
 db.Targykeszletek.aggregate(
     [
@@ -126,7 +126,7 @@ db.Targykeszletek.aggregate(
 ]
 )
 
-//azok az itemek amelyek tobb mint 800 kitartast (pontot) adnak
+//7. azok az itemek amelyek tobb mint 800 kitartast (pontot) adnak
 
 db.Item.aggregate(
     [
@@ -154,7 +154,7 @@ db.Item.aggregate(
 ]
 )
 
-//73sdf23dg hosnek mennyibe kerulnek az itemei
+//8. 73sdf23dg hosnek mennyibe kerulnek az itemei
 db.Targykeszletek.aggregate(
     [
     {
@@ -189,7 +189,7 @@ db.Targykeszletek.aggregate(
 ]
 )
 
-//73sdf23dg hosnek mennyibe kerulnek az itemeiosszesen elmentve egy kulon fieldbe
+//9. 73sdf23dg hosnek mennyibe kerulnek az itemeiosszesen elmentve egy kulon fieldbe
 db.Targykeszletek.aggregate(
     [
     {
@@ -216,7 +216,7 @@ db.Targykeszletek.aggregate(
     }
 ]
 )  
-//Azok a hosok akiknek a kineztetei osszesen tobb mint 5000-et er
+//10. Azok a hosok akiknek a kineztetei osszesen tobb mint 5000-et er
 db.Hos.aggregate([
     {
         $addFields: {
@@ -235,7 +235,7 @@ db.Hos.aggregate([
 
 
 
-//far2sjmtzb itemet hany hos hasznalja
+//11. far2sjmtzb itemet hany hos hasznalja
 
 db.Item.find({
     ar: {$gt: 3500
@@ -248,7 +248,7 @@ db.Item.createIndex({
     "ar": 1
 })
 //220 after
-//m betuvel kezdodo item, a kep faljuk .png es 3 tulajdonsaga van
+//12. m betuvel kezdodo item, a kep faljuk .png es 3 tulajdonsaga van
 db.Item.find({
     nev: "nb2dhx0vhr",
     kepfile: {$regex: /.png$/i
@@ -263,7 +263,7 @@ db.Item.createIndex({
 })
 
 
-//azok a hosok amelyeknek az ara > 2000 es 3 kinezete van es leirasa
+//13. azok a hosok amelyeknek az ara > 2000 es 3 kinezete van es leirasa
 
 db.Hos.find({
     ar: {
@@ -291,11 +291,10 @@ db.Hos.createIndex({
 //229
 
 
-//
-
+//14. lmycz9o702 nevu jatekmod
 db.jatekmod.find({
    
-   nev:"lmycz9o702"
+   nev: "lmycz9o702"
 }).explain("executionStats").executionStats.executionTimeMillis
 //337
 
@@ -303,3 +302,299 @@ db.jatekmod.createIndex({
     "nev": 1
 })
 //1
+
+//15 100 es 4000 kozotti erteku hoso kar szerint forditott sorrendben rendezve
+db.Hos.find({
+    $and: [
+        {
+             ar: {$gt: 100
+            }
+        },
+        {
+            ar: {$lt: 4000
+            }
+        }
+    ]
+}).sort({ar: -1
+}).explain("executionStats").executionStats.executionTimeMillis
+//142
+
+db.Hos.createIndex({
+    "ar": 1
+})
+//69
+
+//16 rmgnee8udul nevu targykeszlet, amelynek legalabb 6 iteme van
+db.Targykeszletek.find({
+    hos: {
+        nev: "rmgnee8udul"
+    },
+    itemek: {
+        $size: 6
+    }
+}).explain("executionStats").executionStats.executionTimeMillis
+//39
+
+db.Targykeszletek.createIndex({
+    "hos.nev": 1
+})
+
+//17 azokatat a jatekmodokat amelyeknek az engedelyezett hosei kozott szerepel mbbqoh18x2
+db.jatekmod.find({
+    engedelyezetthosok:{
+        nev:"mbbqoh18x2"
+    }
+}).explain("executionStats").executionStats.executionTimeMillis
+//504
+
+db.jatekmod.createIndex({
+    "engedelyezetthosok.nev": 1
+})
+//259
+
+//18. Listazzuk ki azon meccseket valamint a meccsekben szereplo hosok egyes informacioit, amelyekben a vwgp5nyaq nevezetu hossel jatszodtak.
+db.Meccsek.aggregate(
+[
+    {
+		$match: {
+			nyertes: "kek",
+			jatekosok: {
+                "$elemMatch": {
+					hos: {
+						nev: "vwgp5nyaq"
+                    }
+                }
+            }
+        }
+    },
+    {
+       $lookup: {
+            from: "Hos",
+            localField: "jatekosok.hos.nev",
+            foreignField: "nev",
+            as: "hosDetail"
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			idotartam: 1,
+            "hosDetail.nev": 1,
+            "hosDetail.ar": 1,
+            "hosDetail.meccsekSzam": 1
+        }
+    }
+]
+)
+
+//19. Listazzuk ki azon meccseket valamint a meccsekben szereplo hosok egyes informacioit, amelyekben jatszodtak legalabb egy 3000-nel dragabb, illetve 800-nal olcsobb hossel.
+db.Meccsek.aggregate(
+[
+    {
+		$match: {
+			nyertes: "kek"
+        }
+    },
+    {
+       $lookup: {
+            from: "Hos",
+            localField: "jatekosok.hos.nev",
+            foreignField: "nev",
+            as: "hosDetail"
+        }
+    },
+    {
+		$match: {
+            "hosDetail": {
+				$all: [
+                    {
+                        "$elemMatch": { ar: { $gt: 3000
+                            }
+                        }
+                    },
+                    {
+                        "$elemMatch": { ar: { $lt: 800
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			idotartam: 1,
+            "hosDetail.nev": 1,
+            "hosDetail.ar": 1,
+            "hosDetail.meccsekSzam": 1
+        }
+    }
+]
+)
+
+//20. Listazzuk ki azon meccseket valamint egyeb informaciokat, amelyekben minden jatszott hos es annak osszes kinezete dragabb mint 1000.
+db.Meccsek.aggregate(
+[
+    {
+		$match: {
+			nyertes: "kek"
+        }
+    },
+    {
+       $lookup: {
+            from: "Hos",
+            localField: "jatekosok.hos.nev",
+            foreignField: "nev",
+            as: "hosDetail"
+        }
+    },
+    {
+		$match: {
+			$and: [
+                {
+                    "hosDetail.kinezetek": {
+						$not: {
+                            "$elemMatch": { ar: { $lt: 1000
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "hosDetail": {
+						$not: {
+                            "$elemMatch": { ar: { $lt: 1000
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			idotartam: 1,
+            "hosDetail.nev": 1,
+            "hosDetail.ar": 1,
+            "hosDetail.meccsekSzam": 1,
+            "hosDetail.kinezetek": 1
+        }
+    }
+]
+)
+
+//21. Listazzuk ki azon meccseket valamint egyeb informaciokat, amelyekben a jatszott hosok osszerteke nagyobb mint 40000.
+db.Meccsek.aggregate(
+[
+    {
+		$match: {
+			idotartam: {
+				$gt: 2000
+            }
+        }
+    },
+    {
+       $lookup: {
+            from: "Hos",
+            localField: "jatekosok.hos.nev",
+            foreignField: "nev",
+            as: "hosDetail"
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			idotartam: 1,
+            "hosDetail.nev": 1,
+            "hosDetail.ar": 1,
+            "hosDetail.meccsekSzam": 1,
+            "Hosok_ara": {
+				$sum : "$hosDetail.ar"
+            }
+        }
+    },
+    {
+		$match: {
+			Hosok_ara: {
+				$gt: 40000
+            }
+        }
+    }
+]
+)
+
+//22. Listazzuk azon jatekmodokat, amelyeknek neve elso ket betuje ugy kezdodik mint az utolso ket betuje vegzodik. Ezenfelul pontosan ket jutalom vagy ket hos legyen elerheto benne.
+db.jatekmod.aggregate(
+[
+    {
+		$match: {
+			nev: {
+				$regex: /^(.)(.).*\2\1$/i
+            },
+			$or: [
+                {
+				szerezhetojutalmak: {
+					$size: 2
+                    }
+                },
+                {
+				engedelyezetthosok: {
+					$size: 2
+                    }
+                }
+            ]
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			nev: 1,
+			szerezhetojutalmak: 1
+        }
+    },
+]
+)
+
+//23. Az osszes olyan item es tulajdonsagainak az osszege, amelyik kevesebb mint 5 fajta tulajdonsaggal rendelkezik, a neve nem tartalmaz szamjegyet, valamint nem elerheto.
+db.Item.aggregate(
+[
+    {
+		$match: {
+			elerheto: false,
+			nev: {
+				$regex: /^([^0-9
+                ]*)$/i
+            }
+        }
+    },
+    {
+		$project: {
+			_id: 0,
+			nev: 1,
+			elerheto: 1,
+            "Osszeg": {
+				$reduce: {
+					input: "$tulajdonsagok.v",
+					initialValue: 1,
+					in: {$add: [
+                            "$$value",
+                            "$$this"
+                        ]
+                    }
+                }
+            },
+			size: {$size: "$tulajdonsagok"
+            }
+        }
+    },
+    {$match: {
+            "size": {$lt: 5
+            }
+        }
+    }
+]
+)
+
