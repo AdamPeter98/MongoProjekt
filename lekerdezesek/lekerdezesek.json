@@ -1,4 +1,5 @@
-/** item -> targykeszlet**/
+
+//A ev40b4ks7h hos itemeinek reszletes leirasa
 
 db.Targykeszletek.aggregate(
     [
@@ -19,7 +20,7 @@ db.Targykeszletek.aggregate(
     },
 ]) 
 
-
+// A 2-es schmea versionnal rendelkezo Splesartok hoseinek a reszletes leirasa
 db.Splesartok.aggregate(
     [
     {
@@ -38,19 +39,45 @@ db.Splesartok.aggregate(
 ]
 ) 
 
-
+//Azok a hosok akik tobb mint 200 meccsben resztvettek emeljuk meg az arukat 
+db.Hos.aggregate([
+    {
+        $project: {
+            nev: 1,
+            meccsekSzama: 1,
+            ujAr: {
+                $cond: {if: {$gte: [
+                            "$ar",
+                            200
+                        ]
+                    },then: {
+                    $multiply: [
+                            "$ar",
+                            1.2
+                        ]
+                    }, else: 20
+                }
+            }
+        }
+    }
+])
 
 //lekerdezesek
 db.Hos.aggregate(
-    [
-    {$project: {nev: 1,_id: 0,meccsekSzam: 1
+[
+    {
+        $project: {
+            nev: 1,
+            _id: 0,
+            meccsekSzam: 1
         }
     },
-    {$sort: {meccsekSzam: -1
+    {
+        $sort: {
+            meccsekSzam: -1
         }
     }
-]
-)
+])
 
 // Az a hos amelyik 54905 es 5wwwjkakzr a neve
 
@@ -190,6 +217,26 @@ db.Targykeszletek.aggregate(
     }
 ]
 )  
+//Azok a hosok akiknek a kineztetei osszesen tobb mint 5000-et er
+db.Hos.aggregate([
+    {
+        $addFields: {
+            totalKinezetAr: {
+                    $sum: "$kinezetek.ar"
+            }
+        }
+    },
+    {
+        $match: {
+            totalKinezetAr: {$gt: 5000
+            }
+        }
+    }
+])
+
+
+
+//far2sjmtzb itemet hany hos hasznalja
 
 db.Item.find({
     ar: {$gt: 3500
@@ -198,7 +245,6 @@ db.Item.find({
 }).explain("executionStats").executionStats.executionTimeMillis
     
 //720 before index
-
 db.Item.createIndex({
     "ar": 1
 })
@@ -206,11 +252,12 @@ db.Item.createIndex({
 
 
 //m betuvel kezdodo item, a kep faljuk .png es 3 tulajdonsaga van
-
 db.Item.find({
     nev: "nb2dhx0vhr",
-    kepfile:{$regex: /.png$/i},
-    tulajdonsagok:{$size:5}
+    kepfile: {$regex: /.png$/i
+    },
+    tulajdonsagok: {$size: 5
+    }
 }).explain("executionStats").executionStats.executionTimeMillis
 
 //498
@@ -218,3 +265,4 @@ db.Item.createIndex({
     "nev": 1
 })
 //1
+

@@ -1,19 +1,15 @@
-db.createCollection("meccsek",
+db.createCollection("Meccsek",
 {
     "validator": {
         "$jsonSchema": {
             "bsonType": "object",
             "required": [
-                "datum",
                 "schema_version",
                 "idotartam",
                 "jatekosok",
                 "nyertes"
             ],
             "properties": {
-                "datum": {
-                    "bsonType": "date",
-                },
                 "schema_version": {
                     "bsonType": "int"
                 },
@@ -24,7 +20,6 @@ db.createCollection("meccsek",
                 },
                 "jatekosok": {
                     "bsonType": "array",
-                    "minItems": 10,
                     "uniqueItems": true,
                     "items": {
                         "bsonType": [
@@ -46,35 +41,16 @@ db.createCollection("meccsek",
                             "hos": {
                                 "bsonType": "object",
                                 "required": [
-                                    "nev",
-                                    "kinezet"
+                                    "nev"                               
                                 ],
                                 "properties": {
                                     "nev": {
                                         "bsonType": "string",
                                     },
-                                    "kinezet": {
-                                        "bsonType": "object",
-                                        "required": [
-                                            "nev",
-                                            "kepfile"
-                                        ],
-                                        "properties": {
-                                            "nev": {
-                                                "bsonType": "string"
-                                            },
-                                            "kepfile": {
-                                                "bsonType": "string"
-                                            }
-                                        }
-                                    }
                                 }
                             },
                             "csapat": {
-                                "enum": [
-                                    "piros",
-                                    "kek"
-                                ]
+                                "bsonType": "string"
                             }
                         }
                     }

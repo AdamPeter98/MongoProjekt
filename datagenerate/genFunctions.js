@@ -36,46 +36,154 @@ var getRandomNameItemId = function () {
 var getRandomNameJatekomd = function () {
     return db.Hos.findOne({ schema_version: { $eq: 1 } }).nev
 }
-for (var i = 1; i <= 34230; i++) {
-    db.Hos.deleteOne({ nev: getRandomNameJatekomd() })
-}
+
 
 var getRandomHosName = function () {
     return db.Hos.findOne({ ar: { $eq: getRandomArbitrary(450, 6300) } }, { "nev": 1 }).nev.toString()
 }
 
+function randomDate(start, end, startHour, endHour) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    return date;
+}
+randomDate(new Date(2019, 1, 1), new Date(2020, 1, 1), 0, 23)
+
 var getItems = function () {
     return db.Item.aggregate([
         {
-           $match: {
-               ar: {$gt: 3800 }
-                   },
-       },{
-           $sort:{
-               ar:-1
-           }
-       }
-           ])
-       
+            $match: {
+                ar: { $gt: 3800 }
+            },
+        }, {
+            $sort: {
+                ar: -1
+            }
+        }
+    ])
+
+}
+
+var randomKekVagyPiros = function () {
+    var index = getRandomArbitrary(0, 1);
+    var k = ["kek", "piros"]
+    return k[index];
 }
 
 var itemPerformance = function () {
     var sDate = Date();
-   var res = db.Item.aggregate([
+    var res = db.Item.aggregate([
         {
-           $match: {
-               ar: {$gt: 3700 }
-                   },
-       },{
-           $sort:{
-               ar:-1
-           }
-       }
-           ])
-    var fDate = Date(); 
+            $match: {
+                ar: { $gt: 3700 }
+            },
+        }, {
+            $sort: {
+                ar: -1
+            }
+        }
+    ])
+    var fDate = Date();
 
-    return res+sDate+" "+fDate
+    return res + sDate + " " + fDate
 }
+
+//Meccsek
+for (var i = 1; i <= 1000; i++) {
+    db.Meccsek.insert(
+        {
+            "schema_version": 1,
+            "idotartam": getRandomArbitrary(10, 10000),
+            "jatekosok": [
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                {
+                    "nev":randomName(),
+                    "kepfile":randomKep(),
+                    "hos":{
+                       "nev": getRandomHosName()
+                    },
+                    "csapat":randomKekVagyPiros()
+                },
+                
+               
+            ],
+    "nyertes":randomKekVagyPiros()
+        }
+    );
+}
+
 
 /*
 Attributum minta  - Item
@@ -87,6 +195,10 @@ Séma verzió - minden
 Hivatkozas targykeszletben hos objectid
 */
 
+
+for (var i = 1; i <= 34230; i++) {
+    db.Hos.deleteOne({ nev: getRandomNameJatekomd() })
+}
 //splesartok
 for (var i = 1; i <= 1000; i++) {
     db.Splesartok.insert(
